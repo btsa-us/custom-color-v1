@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BTSA — Custom Color Program</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5rem;
+  height: 52px;
+  border-bottom: 0.5px solid rgba(255,255,255,0.15);
+  transition: border-color 0.4s, background 0.4s;
+}
+
+nav.light { border-color: rgba(0,0,0,0.12); }
+
+.nav-left {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  flex: 1;
+}
+
+.nav-left a, .nav-right a {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: color 0.3s;
+  cursor: pointer;
+}
+
+.nav-center {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  transition: color 0.3s;
+  text-align: center;
+  flex: 1;
+}
+
+.nav-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex: 1;
+  gap: 0.5rem;
+}
+
+.nav-right a {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ── SCROLL CONTAINER ── */
+#sc {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+}
+#sc::-webkit-scrollbar { display: none; }
+
+/* ── SECTIONS ── */
+.section {
+  scroll-snap-align: start;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0 3.5rem 3rem;
+  position: relative;
+}
+
+/* ── TOP ROW ── */
+.sec-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-top: 4.5rem;
+  margin-bottom: auto;
+}
+
+.ptag { display: flex; flex-direction: column; gap: 2px; }
+
+.ptag-code {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.4;
+}
+
+.ptag-name {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.4;
+}
+
+
+.ptag-hex {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  opacity: 0.32;
+  margin-top: 1px;
+}
+
+.section-num {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  opacity: 1;
+  text-transform: uppercase;
+}
+
+/* ── MAIN CONTENT ── */
+.sec-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  align-items: end;
+  padding-bottom: 1.5rem;
+  flex: 1;
+  align-self: flex-end;
+  width: 100%;
+}
+
+/* three-col variant */
+.sec-main-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+  align-items: end;
+  padding-bottom: 1.5rem;
+  flex: 1;
+  align-self: flex-end;
+  width: 100%;
+}
+
+.sec-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-right: 2.5rem;
+}
+
+.sec-mid {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-left: 2.5rem;
+  padding-right: 2rem;
+  opacity: 0.9;
+}
+
+.sec-right-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-left: 2rem;
+  opacity: 0.9;
+}
+
+/* two-col right */
+.sec-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-left: 2.5rem;
+  opacity: 0.9;
+}
+
+.eyebrow {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.45;
+  margin-bottom: 0.85rem;
+}
+
+.headline {
+  font-size: clamp(36px, 4.2vw, 72px);
+  font-weight: 900;
+  line-height: 0.91;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.body-text {
+  font-size: 13px;
+  line-height: 1.8;
+  opacity: 0.7;
+}
+
+.badge {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 7px 14px;
+  border: 1.5px solid currentColor;
+  align-self: flex-start;
+}
+
+.btn-solid {
+  display: inline-block;
+  padding: 9px 16px;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  margin-bottom: 6px;
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+  width: auto;
+}
+
+.btn-ghost {
+  display: inline-block;
+  padding: 9px 16px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+  width: auto;
+}
+
+.text-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border-bottom: 1.5px solid currentColor;
+  padding-bottom: 2px;
+  text-decoration: none;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+/* CERT GRID */
+.cert-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  margin-top: 1rem;
+  background: rgba(255,255,255,0.18);
+}
+.cert-item { padding: 0.85rem 1rem; }
+.cert-name { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 3px; }
+.cert-desc { font-size: 10px; line-height: 1.5; opacity: 0.6; }
+
+/* SCROLL HINT */
+.scroll-hint {
+  position: absolute;
+  bottom: 1.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.18;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+/* NO lines — just the word */
+
+/* DOT NAV */
+.side-dots {
+  position: fixed;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.nav-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  cursor: pointer;
+  transition: background 0.25s, opacity 0.25s;
+  opacity: 0.28;
+}
+.nav-dot.active { opacity: 1; background: currentColor; }
+
+/* SECTION COLORS */
+.s0 { background: #B02B2C; color: #fff; }
+.s1 { background: #F2C97E; color: #1a1204; }
+.s2 { background: #7F9B7D; color: #0d1a0c; }
+.s3 { background: #4A6FA5; color: #fff; }
+.s4 { background: #F9C6C0; color: #2a0d0a; }
+.s5 { background: #C1622F; color: #fff; }
+.s6 { background: #8A8A82; color: #fff; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainnav">
+  <div class="nav-left">
+    <a href="#">Shop</a>
+    <a href="#">Account</a>
+    <a href="#">Contact</a>
+    <a href="#">Cart (0)</a>
+  </div>
+  <div class="nav-center" id="nav-logo">BTSA</div>
+  <div class="nav-right">
+    <span>✿</span>
+    <a href="#">Pick a Pantone</a>
+  </div>
+</nav>
+
+<!-- SIDE DOTS — 6 sections now -->
+<div class="side-dots" id="side-dots">
+  <div class="nav-dot active" onclick="goTo(0)"></div>
+  <div class="nav-dot" onclick="goTo(1)"></div>
+  <div class="nav-dot" onclick="goTo(2)"></div>
+  <div class="nav-dot" onclick="goTo(3)"></div>
+  <div class="nav-dot" onclick="goTo(4)"></div>
+  <div class="nav-dot" onclick="goTo(5)"></div>
+</div>
+
+<div id="sc">
+
+  <!-- S0 — HERO MERGED — Jester Red — centered headline + subtext -->
+  <section class="section s0" id="s0" style="background:#9B2335;color:#fff;">
+    <div class="sec-top">
+      <div class="ptag">
+        <div class="ptag-code">Pantone 19-1862 TCX</div>
+        <div class="ptag-name">Jester Red</div>
+        <div class="ptag-hex">#9B2335</div>
+      </div>
+      <div class="section-num">Custom Color Program</div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:2rem;padding-bottom:2rem;">
+      <div class="headline" style="font-size:clamp(42px,6vw,88px);line-height:0.89;">Any Color.<br>Any Style.</div>
+      <p class="body-text" style="opacity:0.55;font-size:14px;line-height:1.8;max-width:420px;">Your ideas, brought to life in any color.</p>
+    </div>
+    <div class="scroll-hint">Scroll</div>
+  </section>
+
+  <!-- S1 — "Your Color Starts Here" — Summer Sun -->
+  <section class="section s1" id="s1" style="background:#EFE237;color:#1a1400;">
+    <div class="sec-top">
+      <div class="ptag">
+        <div class="ptag-code">Pantone 12-0650 TCX</div>
+        <div class="ptag-name">Summer Sun</div>
+        <div class="ptag-hex">#EFE237</div>
+      </div>
+      <div class="section-num">Custom Color Program</div>
+    </div>
+    <div class="sec-main">
+      <div class="sec-left">
+        <div class="eyebrow">Pick a Pantone</div>
+        <div class="headline">Your Color<br>Starts Here.</div>
+      </div>
+      <div class="sec-right">
+        <p class="body-text">Use our Pick a Pantone tool to explore any color and instantly apply it across BTSA styles. Once you find the right style, your selected color carries with you to the product page where you can place a custom color order.</p>
+        <p class="body-text" style="margin-top:1rem;">More than a visualization tool, it represents what BTSA can produce: transforming one of our blanks into a custom garment-dyed color built around your exact direction.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- S2 — PFD BLANK — Orchid Pink -->
+  <section class="section s2" id="s2" style="background:#EDAFC8;color:#2a0d0a;">
+    <div class="sec-top">
+      <div class="ptag">
+        <div class="ptag-code">Pantone 13-2010 TCX</div>
+        <div class="ptag-name">Orchid Pink</div>
+        <div class="ptag-hex">#EDAFC8</div>
+      </div>
+      <div class="section-num">Custom Color Program</div>
+    </div>
+    <div class="sec-main">
+      <div class="sec-left">
+        <div class="eyebrow">The foundation</div>
+        <div class="headline">Every<br>custom<br>color begins<br>with a BTSA<br>PFD blank.</div>
+      </div>
+      <div class="sec-right">
+        <p class="body-text">Clean, undyed, and ready for transformation — it provides the foundation for developing a color around your exact creative direction.</p>
+        <a class="text-link">Learn more about PFD →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- S3 — INSPIRATION — Palace Blue -->
+  <section class="section s3" id="s3" style="background:#5072A7;color:#fff;">
+    <div class="sec-top">
+      <div class="ptag">
+        <div class="ptag-code">Pantone 18-4043 TCX</div>
+        <div class="ptag-name">Palace Blue</div>
+        <div class="ptag-hex">#5072A7</div>
+      </div>
+      <div class="section-num">Custom Color Program</div>
+    </div>
+    <div class="sec-main-3">
+      <div class="sec-left">
+        <div class="eyebrow">Your inspiration becomes the color</div>
+        <div class="headline">We can<br>match<br>anything.</div>
+      </div>
+      <div class="sec-mid">
+        <p class="body-text">Send us a reference, idea, or source of inspiration — and our team will work alongside you to translate it into a custom color. Together we'll refine the direction, develop the match, and garment dye it onto the BTSA style of your choice.</p>
+      </div>
+      <div class="sec-right-col" style="align-items:flex-start;">
+        <button class="btn-solid" style="background:#fff;color:#4A6FA5;">Share your reference ↗</button>
+        <button class="btn-ghost" style="color:#fff;border:1px solid rgba(255,255,255,0.4);">Contact us</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- S4 — RESPONSIBLE — Marmalade -->
+  <section class="section s4" id="s4" style="background:#C07622;color:#fff;">
+    <div class="sec-top">
+      <div class="ptag">
+        <div class="ptag-code">Pantone 17-1140 TCX</div>
+        <div class="ptag-name">Marmalade</div>
+        <div class="ptag-hex">#C07622</div>
+      </div>
+      <div class="section-num">Custom Color Program</div>
+    </div>
+    <div class="sec-main">
+      <div class="sec-left">
+        <div class="eyebrow">A more responsible dye process</div>
+        <div class="headline">Rich,<br>lasting<br>color.<br>Lower<br>impact.</div>
+      </div>
+      <div class="sec-right">
+        <p class="body-text">Our custom colors are developed using bluesign® and GOTS-approved dyes through a low-water garment-dye process designed to reduce water usage while delivering rich, lasting color.</p>
+        <div class="cert-grid">
+          <div class="cert-item" style="background:#C07622;"><div class="cert-name">bluesign® approved</div><div class="cert-desc">Responsible chemical use throughout</div></div>
+          <div class="cert-item" style="background:#C07622;"><div class="cert-name">GOTS certified</div><div class="cert-desc">Global organic textile standard</div></div>
+          <div class="cert-item" style="background:#C07622;"><div class="cert-name">Low-water process</div><div class="cert-desc">Reduced water usage at every stage</div></div>
+          <div class="cert-item" style="background:#C07622;"><div class="cert-name">Garment-dyed</div><div class="cert-desc">Color on the finished garment</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S5 — CTA — Magnetite -->
+  <section class="section s5" id="s5" style="background:#857E7B;color:#fff;">
+    <div class="sec-top">
+      <div class="ptag">
+        <div class="ptag-code">Pantone 17-2501 TCX</div>
+        <div class="ptag-name">Magnetite</div>
+        <div class="ptag-hex">#857E7B</div>
+      </div>
+      <div class="section-num">Custom Color Program</div>
+    </div>
+    <div class="sec-main">
+      <div class="sec-left">
+        <div class="headline">Your next<br>great idea<br>is one click<br>away.</div>
+      </div>
+      <div class="sec-right" style="align-items:flex-start;">
+        <button class="btn-solid" style="background:#fff;color:#857E7B;">Pick a Pantone ↗</button>
+        <button class="btn-ghost" style="color:#fff;border:1px solid rgba(255,255,255,0.4);">Browse styles</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+const sc = document.getElementById('sc');
+const secs = sc.querySelectorAll('.section');
+const dots = document.querySelectorAll('.nav-dot');
+const nav = document.getElementById('mainnav');
+const navLogo = document.getElementById('nav-logo');
+const navLinks = nav.querySelectorAll('a, span');
+const sideDots = document.getElementById('side-dots');
+
+// 6 sections: Jester Red, Summer Sun, Orchid Pink, Palace Blue, Marmalade, Magnetite
+const navColors = ['#fff', '#1a1400', '#2a0d0a', '#fff', '#fff', '#fff'];
+const lightSections = [1, 2]; // Summer Sun, Orchid Pink — dark text
+
+let current = 0;
+
+function updateNav(idx) {
+  const c = navColors[idx];
+  const isLight = lightSections.includes(idx);
+  navLogo.style.color = c;
+  navLinks.forEach(l => l.style.color = c);
+  nav.style.borderColor = isLight ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.15)';
+  sideDots.style.color = c;
+  dots.forEach((d, i) => {
+    d.style.borderColor = c;
+    d.style.background = i === idx ? c : 'transparent';
+    d.classList.toggle('active', i === idx);
+    d.style.opacity = i === idx ? '1' : '0.28';
+  });
+}
+
+function goTo(idx) {
+  secs[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+      const idx = Array.from(secs).indexOf(entry.target);
+      current = idx;
+      updateNav(idx);
+    }
+  });
+}, { root: sc, threshold: 0.5 });
+
+secs.forEach(s => observer.observe(s));
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowDown' && current < secs.length - 1) goTo(current + 1);
+  if (e.key === 'ArrowUp' && current > 0) goTo(current - 1);
+});
+
+updateNav(0);
+</script>
+</body>
+</html>
